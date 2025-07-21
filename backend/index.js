@@ -1,16 +1,20 @@
+import "dotenv/config";
 import express from "express";
-
-const PORT = 3000;
+import cors from "cors";
+import mongoose from "mongoose";
+import receiptRoutes from "./routes/receipts.js";
 
 const app = express();
+const PORT = process.env.PORT || 5001;
 
+app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send("Hello there !!!");
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
+app.use("/api/receipts", receiptRoutes);
 
-app.listen(PORT, (req, res) => {
-    console.log("Server started at http://localhost:3000")
-})
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
