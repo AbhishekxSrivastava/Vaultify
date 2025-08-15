@@ -14,6 +14,7 @@ const AddReceiptPage = () => {
   const { addReceipt, loading } = useReceipts();
   const navigate = useNavigate();
 
+  // Refs for file inputs
   const galleryInputRef = useRef(null);
   const cameraInputRef = useRef(null);
 
@@ -21,7 +22,7 @@ const AddReceiptPage = () => {
     const file = e.target.files[0];
     if (file) {
       setReceiptImage(file);
-      setSuccess("");
+      setSuccess(""); // Clear success message when a new file is chosen
     }
   };
 
@@ -29,20 +30,23 @@ const AddReceiptPage = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
     if (!title || !purchaseDate || !receiptImage) {
       setError("Title, Purchase Date, and an Image are required.");
       return;
     }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("purchaseDate", purchaseDate);
     formData.append("receiptImage", receiptImage);
     if (warrantyEndDate) formData.append("warrantyEndDate", warrantyEndDate);
     if (amount) formData.append("amount", amount);
+
     try {
       await addReceipt(formData);
       setSuccess("Receipt added successfully! Redirecting...");
-      setTimeout(() => navigate("/receipts"), 2000);
+      setTimeout(() => navigate("/receipts"), 2000); // Redirect after 2 seconds
     } catch (err) {
       setError(err.response?.data?.error || "An error occurred.");
     }
@@ -50,10 +54,10 @@ const AddReceiptPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">
         Add a New Receipt
       </h1>
-      <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md">
         {error && (
           <p className="bg-red-100 text-red-700 p-3 rounded-md mb-4">{error}</p>
         )}
@@ -63,6 +67,7 @@ const AddReceiptPage = () => {
           </p>
         )}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Form fields... */}
           <div>
             <label
               htmlFor="title"
@@ -128,6 +133,8 @@ const AddReceiptPage = () => {
               />
             </div>
           </div>
+
+          {/* Image Upload Section */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Receipt Image
@@ -153,6 +160,7 @@ const AddReceiptPage = () => {
                     Choose how to upload your receipt
                   </p>
                   <div className="mt-4 flex flex-col sm:flex-row justify-center gap-4">
+                    {/* Hidden file inputs */}
                     <input
                       type="file"
                       accept="image/*"
@@ -168,6 +176,8 @@ const AddReceiptPage = () => {
                       onChange={handleFileChange}
                       className="hidden"
                     />
+
+                    {/* Visible buttons */}
                     <button
                       type="button"
                       onClick={() => cameraInputRef.current.click()}
@@ -189,6 +199,7 @@ const AddReceiptPage = () => {
               )}
             </div>
           </div>
+
           <button
             type="submit"
             disabled={loading || success}
