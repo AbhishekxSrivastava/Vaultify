@@ -1,25 +1,23 @@
-import admin from "firebase-admin";
-import serviceAccount from "../firebase-service-account-key.json" assert { type: "json" };
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
-
-const verifyToken = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(403).send("Unauthorized");
+export const protect = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401).json({ message: "Not authorized, token failed" });
+    }
   }
-  const idToken = authHeader.split("Bearer ")[1];
-  try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    req.user = decodedToken;
-    next();
-  } catch (error) {
-    res.status(403).send("Unauthorized");
+  if (!token) {
+    res.status(401).json({ message: "Not authorized, no token" });
   }
 };
-
-export default verifyToken;
