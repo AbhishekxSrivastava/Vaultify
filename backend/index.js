@@ -15,7 +15,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://vaultify-rose.vercel.app",
     credentials: true,
   })
 );
