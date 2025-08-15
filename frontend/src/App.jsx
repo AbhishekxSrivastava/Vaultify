@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
 // Layouts
-import MainLayout from "./layouts/MainLayout";
+import MainLayout from "./layout/MainLayout";
 
 // Auth Pages
 import LoginPage from "./pages/auth/LoginPage";
