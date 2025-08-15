@@ -9,23 +9,23 @@ const DashboardPage = () => {
   const { receipts, fetchReceipts, loading } = useReceipts();
 
   useEffect(() => {
-    fetchReceipts();
-  }, [fetchReceipts]);
+    if (receipts.length === 0) {
+      fetchReceipts();
+    }
+  }, [fetchReceipts, receipts.length]);
 
   const totalReceipts = receipts.length;
-  // In a real app, you could calculate more stats here (e.g., total spending)
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
         Welcome back, {user?.name}!
       </h1>
-      <p className="text-gray-600 mb-8">
+      <p className="text-gray-600 mb-6 md:mb-8">
         Here's a quick overview of your vault.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Stat Card */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -33,7 +33,7 @@ const DashboardPage = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm text-gray-500">Total Receipts</p>
-              {loading ? (
+              {loading && receipts.length === 0 ? (
                 <div className="h-6 w-10 bg-gray-200 rounded animate-pulse"></div>
               ) : (
                 <p className="text-2xl font-bold text-gray-900">
@@ -44,7 +44,6 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Quick Action Card */}
         <Link
           to="/add"
           className="bg-white p-6 rounded-lg shadow flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors"
@@ -54,12 +53,12 @@ const DashboardPage = () => {
         </Link>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-8 md:mt-10">
         <h2 className="text-xl font-bold text-gray-900 mb-4">
           Recent Receipts
         </h2>
         <div className="bg-white rounded-lg shadow overflow-hidden">
-          {loading ? (
+          {loading && receipts.length === 0 ? (
             <p className="p-4 text-gray-500">Loading recent receipts...</p>
           ) : receipts.length > 0 ? (
             <ul>

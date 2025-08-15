@@ -77,14 +77,14 @@ const ReceiptDetailPage = () => {
           alt={receipt.title}
           className="w-full h-auto max-h-[500px] object-contain bg-gray-200 p-2"
         />
-        <div className="p-6 sm:p-8">
+        <div className="p-4 sm:p-6 md:p-8">
           <div className="flex flex-col sm:flex-row justify-between sm:items-start">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-0">
               {receipt.title}
             </h1>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center justify-center px-4 py-2 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-md transition-colors"
+              className="flex items-center justify-center px-4 py-2 text-sm font-medium text-red-600 bg-red-100 hover:bg-red-200 rounded-md transition-colors self-start sm:self-center"
             >
               <Trash2 size={16} className="mr-2" />
               Delete
