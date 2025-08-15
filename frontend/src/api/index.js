@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: "https://vaultify-sjl2.onrender.com/api",
+  baseURL: 'http://localhost:8000/api',
   withCredentials: true, // Important for sending cookies
 });
 
