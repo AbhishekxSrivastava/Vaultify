@@ -9,11 +9,12 @@ import {
   Receipt,
 } from "lucide-react";
 
-const Sidebar = () => {
+const Sidebar = ({ onLinkClick = () => {} }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    onLinkClick(); // Close mobile sidebar if open
     await logout();
     navigate("/login");
   };
@@ -25,6 +26,10 @@ const Sidebar = () => {
         : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
     }`;
 
+  const handleLinkClick = () => {
+    onLinkClick(); // Close mobile sidebar when a link is clicked
+  };
+
   return (
     <aside className="w-64 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
       <div className="h-16 flex items-center justify-center border-b border-gray-200">
@@ -32,15 +37,24 @@ const Sidebar = () => {
         <h1 className="text-xl font-bold text-gray-800 ml-2">Vaultify</h1>
       </div>
       <nav className="flex-1 p-4 space-y-2">
-        <NavLink to="/" end className={navLinkClasses}>
+        <NavLink
+          to="/"
+          end
+          className={navLinkClasses}
+          onClick={handleLinkClick}
+        >
           <LayoutDashboard size={20} className="mr-3" />
           Dashboard
         </NavLink>
-        <NavLink to="/receipts" className={navLinkClasses}>
+        <NavLink
+          to="/receipts"
+          className={navLinkClasses}
+          onClick={handleLinkClick}
+        >
           <FileText size={20} className="mr-3" />
           All Receipts
         </NavLink>
-        <NavLink to="/add" className={navLinkClasses}>
+        <NavLink to="/add" className={navLinkClasses} onClick={handleLinkClick}>
           <PlusCircle size={20} className="mr-3" />
           Add Receipt
         </NavLink>
