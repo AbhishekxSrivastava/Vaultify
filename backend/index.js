@@ -13,42 +13,12 @@ const app = express();
 
 connectDB();
 
-
-// 192.168.137.1
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://192.168.137.1",
-  // Add your network IP here if you know it, otherwise the config below handles it.
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      // If the origin is not in our whitelist, but it's a local network IP, allow it for development
-      if (origin.startsWith('http://192.168.') || origin.startsWith('http://10.0.')) {
-        return callback(null, true);
-      }
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-}));
-// --- END CORS CONFIGURATION ---
-
-
-
-
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

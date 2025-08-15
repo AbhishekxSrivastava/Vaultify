@@ -88,20 +88,13 @@ const checkWarrantiesAndSendEmails = async () => {
 const startWarrantyScheduler = () => {
   // This schedule runs the function at 9:00 AM every day.
   // The format is: 'minute hour * * *'
-  // cron.schedule("0 9 * * *", checkWarrantiesAndSendEmails, {
-  //   scheduled: true,
-  //   timezone: "Asia/Kolkata", // Example: Indian Standard Time
-  // });
-  // This schedule runs every minute
-     cron.schedule("* * * * *", checkWarrantiesAndSendEmails, {
-       scheduled: true,
-       timezone: "Asia/Kolkata", // Example: Indian Standard Time
-  
-      });
+  cron.schedule("0 9 * * *", checkWarrantiesAndSendEmails, {
+    scheduled: true,
+    timezone: "Asia/Kolkata", // Example: Indian Standard Time
+  });
   console.log(
     "✅ Warranty reminder scheduler started. Will run every day at 9:00 AM."
   );
 };
 
 export default startWarrantyScheduler;
-
